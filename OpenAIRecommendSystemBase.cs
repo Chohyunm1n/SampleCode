@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-	public abstract class OpenAIRecommendSystemBase : MonoBehaviour
-	{
-	 static protected string key = "OpenAIKey";
+public abstract class OpenAIRecommendSystemBase : MonoBehaviour
+{
+	static protected string key = "OpenAIKey";
  
-	 public abstract void GetItemRecommend(string prompt, Action<bool, string> success);
-	 public abstract void SetItemTableParsing(List<TextAsset> ta);
-	 public abstract void GetItemImage(string prompt,Action<bool, List<Texture>> callback);
-	 public abstract List<Texture2D> LoadItemImage();
-	 public abstract void promptEditing(bool edit);
-  }
+	public abstract void GetItemRecommend(string prompt, Action<bool, string> success);
+ 	public abstract void SetItemTableParsing(List<TextAsset> ta);
+	public abstract void GetItemImage(string prompt,Action<bool, List<Texture>> callback);
+	public abstract List<Texture2D> LoadItemImage();
+	public abstract void promptEditing(bool edit);
+}
