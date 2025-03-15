@@ -11,7 +11,9 @@ public class AvatarViewerUI : MonoBehaviour
     public Customize targetAvatarForNew;
     private AvatarCore targetAvatarCoreForNew;
     private CustomizeTypeTable.CategoryTable[] categoryTables;
-    
+
+    // 데이터 구조 : ex) CategoryKey -> Page (itemKey - Texture)
+    // 한 페이지에 Texture 10개씩 저장
     private Dictionary<string, Dictionary<int, List<KeyValuePair<string, Texture2D>>>> categoryTextureCache = new Dictionary<string, Dictionary<int, List<KeyValuePair<string, Texture2D>>>>();
     private Queue<string> categoryKeyQueue = new Queue<string>();
     private Queue<int> itemKeyQueue = new Queue<int>();
