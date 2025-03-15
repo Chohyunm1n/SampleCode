@@ -121,6 +121,7 @@ public class OpenAIRecommendSystemLoader : OpenAIRecommendSystemBase
     {
         yield return request.SendWebRequest();
 
+        //TODO : try-catch 수정
         if (request.result == UnityWebRequest.Result.Success)
         {
 
