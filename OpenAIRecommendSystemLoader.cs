@@ -16,7 +16,7 @@ public class OpenAIRecommendSystemLoader : OpenAIRecommendSystemBase
     static string OpenAIURL = "https://api.openai.com/v1/chat/completions";
     static string objectName = "AvatarItemRecommendSystem";
 
-    protected static OpenAIRecommendSystemBase instance;
+    private static OpenAIRecommendSystemBase instance;
     public static OpenAIRecommendSystemBase Instance
     {
         get
@@ -120,24 +120,34 @@ public class OpenAIRecommendSystemLoader : OpenAIRecommendSystemBase
     IEnumerator SendRequestCoroutine(UnityWebRequest request, Action<bool, string> success)
     {
         yield return request.SendWebRequest();
-
-        //TODO : try-catch 수정
-        if (request.result == UnityWebRequest.Result.Success)
+        
+       try
         {
-
             var responseData = JsonUtility.FromJson<OpenAIChatCompletion>(request.downloadHandler.text);
-            UnityEngine.Debug.Log(responseData.choices[0].message.content);
-            previousData.Append(responseData.choices[0].message.role);
-            previousData.Append(responseData.choices[0].message.content);
-            conversationHistory = responseData.choices[0].message.content;
-            UnityEngine.Debug.Log("총 토큰 사용량 : " + responseData.usage.total_tokens);
-            var itemRecommendList = ParsingContentData(responseData.choices[0].message.content);
-            itemRecommendData = itemRecommendList;
-            success?.Invoke(true, ItemTextUI());
+            if (responseData != null)
+            {
+                 UnityEngine.Debug.Log(responseData.choices[0].message.content);
+                previousData.Append(responseData.choices[0].message.role);
+                previousData.Append(responseData.choices[0].message.content);
+                conversationHistory = responseData.choices[0].message.content;
+                UnityEngine.Debug.Log("총 토큰 사용량 : " + responseData.usage.total_tokens);
+                var itemRecommendList = ParsingContentData(responseData.choices[0].message.content);
+                if (itemRecommendList != null)
+                {
+                    itemRecommendData = itemRecommendList;
+                    success?.Invoke(true, ItemTextUI());
+                }
+            }
+            else
+            {
+                Debug.Log("Data Load Fail.");
+                return;
+            }
         }
-        else
+        catch(System.Exception e)
         {
-            UnityEngine.Debug.LogError("Error: " + request.error);
+            UnityEngine.Debug.Log("Error: " + request.error);
+            return;
         }
     }
     
